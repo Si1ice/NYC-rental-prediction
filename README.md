@@ -26,7 +26,7 @@
 
 ## Структура проекта
 
-ml_project/<br>
+NYC Rental Price Prediction/<br>
 │<br>
 ├── README.md<br>
 ├── requirements.txt<br>

@@ -1,0 +1,7 @@
+{
+    "paths": {
+        "raw_train": "dataset/raw/train.json",
+        "processed_train": "dataset/processed/train_clean.json",
+        "processed_test": "dataset/processed/test_clean.json"
+    }
+}
