@@ -1,7 +1,11 @@
 {
-    "paths": {
-        "raw_train": "dataset/raw/train.json",
-        "processed_train": "dataset/processed/train_clean.json",
-        "processed_test": "dataset/processed/test_clean.json"
-    }
+  "paths": {
+    "raw_train": "../dataset/raw/train.json",
+    "processed_train": "../dataset/processed/processed_train.json",
+    "processed_test": "../dataset/processed/processed_test.json"
+  },
+  "split": {
+    "test_size": 0.2,
+    "random_state": 42
+  }
 }

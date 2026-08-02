@@ -32,6 +32,7 @@ NYC Rental Price Prediction/<br>
 ├── requirements.txt<br>
 ├── .gitignore<br>
 ├── main.py<br>
+├── config.json<br>
 │<br>
 ├── dataset/<br>
 │   ├── raw/<br>
@@ -47,7 +48,6 @@ NYC Rental Price Prediction/<br>
 │   └── 04_hyperparameter_tuning.ipynb   # GridSearch, RandomSearch, Optuna<br>
 │<br>
 └── src/<br>
-    ├── load.py          # Загрузка + очистка выбросов + time-based split<br>
     ├── preprocess.py    # Feature engineering (amenities, time, encoding)<br>
     ├── selection.py     # Feature selection (Lasso L1, SHAP, permutation importance)<br>
     ├── models.py        # Custom + sklearn + RF + XGBoost + скалеры<br>
