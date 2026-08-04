@@ -1,94 +1,58 @@
 # NYC Rental Price Prediction
 
-## Описание проекта
+End-to-end проект машинного обучения для прогнозирования стоимости месячной аренды квартир в Нью-Йорке. Проект демонстрирует полный цикл Data Science: от разведочного анализа (EDA) и кастомной реализации алгоритмов до продвинутого тюнинга гиперпараметров и интерпретации моделей.
 
-Машинное обучение для предсказания стоимости аренды квартир в Нью-Йорке на основе характеристик жилья.
+## Ключевые результаты
 
-**Цель:** Построить модель регрессии, которая предсказывает цену аренды по 22 признакам (количество комнат, удобства, локация).
+- **Лучшая точность:** Модель **XGBoost** достигла **Test MAE = $438.58** и **R² = 0.806**, 
+  объясняя более 80% вариативности цен и превосходя линейные модели на ~35% по MAE.
+- **Лучшая стабильность:** Модель **CatBoost** показала феноменальную стабильность с разрывом 
+  (gap) между Train и Test R² всего **0.0015** — в **40 раз стабильнее XGBoost** (gap = 0.060), 
+  при потере лишь 5% точности. Это делает её предпочтительным выбором для production-среды.
+- **Валидация знаний:** Кастомные реализации аналитических методов (Normal Equation, Ridge) 
+  **полностью воспроизводят** результаты `scikit-learn` с высокой точностью, 
+  что подтверждает качественную проработку модели с позиции математики, моделей линейной регрессии и регуляризации.
 
-## Задачи проекта
+## Особенности реализации
 
-- Реализовать линейную регрессию с нуля (аналитическое решение + градиентный спуск)
-- Сравнить с sklearn реализацией
-- Добавить регуляризацию (Ridge, Lasso, ElasticNet)
-- Нормализация признаков (MinMax, Standard)
-- Feature engineering (полиномиальные признаки)
-- Анализ стабильности моделей
+- **Защита от Data Leakage:** Строгое разделение данных по времени (Time-Based Split: апрель vs май-июнь), имитирующее реальные бизнес-условия.
+- **Custom ML "под капотом":** Самостоятельная реализация алгоритмов оптимизации (нормальное уравнение, градиентный спуск) для углубленного понимания математики ML.
+- **Продвинутый Feature Engineering:** Генерация полиномиальных признаков (degree=2), бинарное кодирование топ-20 удобств (amenities) и извлечение временных паттернов.
+- **Интерпретируемость:** Анализ важности признаков с помощью SHAP values и Permutation Importance.
+- **Автоматизация тюнинга:** Сравнение трех подходов к подбору гиперпараметров: Grid Search, Random Search и байесовская оптимизация через **Optuna**.
 
-## Технологии
+## Технологический стек
 
-- **Python 3.12**
-- **Библиотеки:**
-  - `numpy` - матричные операции
-  - `pandas` - работа с данными
-  - `scikit-learn` - ML алгоритмы
-  - `matplotlib` - визуализация
+- **Язык:** Python 3.12.3
+- **Обработка данных:** `pandas`, `numpy`
+- **Машинное обучение:** `scikit-3.12`, `xgboost`, `catboost`
+- **Оптимизация и интерпретация:** `optuna`, `shap`, `scipy`
+- **Визуализация:** `matplotlib`, `seaborn`, `tqdm`, `ipywidgets`
 
 ## Структура проекта
 
-NYC Rental Price Prediction/<br>
-│<br>
-├── README.md<br>
-├── requirements.txt<br>
-├── .gitignore<br>
-├── main.py<br>
-├── config.json<br>
-│<br>
-├── dataset/<br>
-│   ├── raw/<br>
-│   │   └── train.json<br>
-│   └── processed/<br>
-│       ├── train_clean.json<br>
-│       └── test_clean.json<br>
-│<br>
-├── notebooks/<br>
-│   ├── 01_EDA.ipynb                    # Разведочный анализ<br>
-│   ├── 02_feature_engineering.ipynb     # Признаки + feature selection (SHAP, permutation)<br>
-│   ├── 03_modeling.ipynb               # Linear → RF → XGBoost → сравнение<br>
-│   └── 04_hyperparameter_tuning.ipynb   # GridSearch, RandomSearch, Optuna<br>
-│<br>
-└── src/<br>
-    ├── preprocess.py    # Feature engineering (amenities, time, encoding)<br>
-    ├── selection.py     # Feature selection (Lasso L1, SHAP, permutation importance)<br>
-    ├── models.py        # Custom + sklearn + RF + XGBoost + скалеры<br>
-    ├── evaluate.py      # Метрики + 5 стратегий CV (KFold, Group, Stratified, TimeSeries)<br>
-    └── train.py         # Обучение + GridSearch + Optuna + сохранение<br>
-
-
-## Инструкция по запуску
-
-### 1. Клонируйте репозиторий
-
-```bash
-git clone https://github.com/Si1ice/nyc-rental-prediction.git
-cd nyc-rental-prediction
 ```
-### 2.Создайте виртуальное окружение
-
-```bash
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
-# или
-venv\Scripts\activate     # Windows
+NYC-rental-prediction/<br>
+│
+├── README.md                  # Документация проекта
+├── requirements.txt           # Зависимости
+├── .gitignore                 # Игнорируемые файлы (venv, __pycache__, processed data)
+├── config.json                # Конфигурация путей и базовых параметров
+├── dataset/
+│   ├── raw/
+│   │   └── train.json         # Исходные данные (не загружаются в Git)
+│   └── processed/             # Генерируется автоматически в 01_EDA.ipynb
+│       ├── train_clean.json   
+│       └── test_clean.json    
+│
+├── notebooks/
+│   ├── 01_EDA.ipynb                    # Разведочный анализ, очистка выбросов, time-based split
+│   ├── 02_feature_engineering.ipynb    # Создание признаков, кодирование, полиномиальные фичи
+│   ├── 03_modeling.ipynb               # Обучение: Custom ML → Sklearn → RF/XGBoost/CatBoost
+│   └── 04_hyperparameter_tuning.ipynb  # Feature selection (SHAP/Lasso), CV стратегии, Optuna
+│
+└── src/
+    ├── models.py        # Кастомные реализации Linear, Ridge, Lasso, ElasticNet + SGD
+    ├── evaluate.py      # Функции метрик и стратегии Cross-Validation (Group K-Fold, TimeSeries)
+    └── selection.py     # Lasso feature selection, Permutation Importance, SHAP
 ```
-### 3.Установка библиотек
-```bash
-pip install -r requirements.txt
-```
-
-### Откройте notebooks/01_EDA.ipynb и следуйте инструкциям.
-
-## Дальнейшие планы
-- Добавить более сложные модели (Random Forest, XGBoost)
-- Feature selection (SHAP, permutation importance)
-- Cross-validation
-- Hyperparameter tuning (GridSearch, Optuna)
-- Docker контейнеризация
-- MLflow для экспериментов
-- Deployment (Flask/FastAPI)
-
-# Автор
-[Булат Тарисов]<br>
-GitHub: @Si1ice<br>
-LinkedIn: [В разработке]<br>
-Email: tarisovb@yandex.ru<br>
